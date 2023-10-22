@@ -8,7 +8,7 @@ The Focus Timer is a feature-rich time management application designed to help u
 
 - **Customizable Timer**: Users can set a time interval to structure their working or learning session.
 
-- **Focus Maintenance**: While the timer is running, users are encouraged to remain concentrated on their tasks. The timer employs techniques like gamification or periodic prompts to discourage distractions and promote sustained attention.
+- **Focus Maintenance**: While the timer is running, users are encouraged to remain concentrated on their tasks. The timer resets when users leave the page to discourage distractions and promote sustained attention.
 
 - **Reward System**: As a motivational element, users earn virtual coins by successfully completing work intervals. These coins serve as a persistent incentive and can be redeemed for various rewards.
 
