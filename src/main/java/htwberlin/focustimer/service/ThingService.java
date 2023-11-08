@@ -1,8 +1,9 @@
-package htwberlin.focustimer;
+package htwberlin.focustimer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import htwberlin.focustimer.entity.Thing;
+import htwberlin.focustimer.repository.ThingRepository;
 import java.util.ArrayList;
 import java.util.List;
 

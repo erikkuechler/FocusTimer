@@ -1,4 +1,4 @@
-package htwberlin.focustimer;
+package htwberlin.focustimer.entity;
 
 import jakarta.persistence.*;
 
