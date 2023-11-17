@@ -17,6 +17,10 @@ public class ProductService {
         return repo.save(product);
     }
 
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
+
     public Product get(Long id) {
         return repo.findById(id).orElseThrow(() -> new RuntimeException());
     }
