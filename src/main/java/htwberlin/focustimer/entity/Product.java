@@ -3,16 +3,16 @@ package htwberlin.focustimer.entity;
 import jakarta.persistence.*;
 
 @Entity
-public class Thing {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int price;
 
-    public Thing() {}
+    public Product() {}
 
-    public Thing(String name, int price) {
+    public Product(String name, int price) {
         this.name = name;
         this.price = price;
     }
@@ -44,13 +44,13 @@ public class Thing {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Thing)) return false;
+        if (!(o instanceof Product)) return false;
 
-        Thing thing = (Thing) o;
+        Product product = (Product) o;
 
-        if (getPrice() != thing.getPrice()) return false;
-        if (getId() != null ? !getId().equals(thing.getId()) : thing.getId() != null) return false;
-        return getName() != null ? getName().equals(thing.getName()) : thing.getName() == null;
+        if (getPrice() != product.getPrice()) return false;
+        if (getId() != null ? !getId().equals(product.getId()) : product.getId() != null) return false;
+        return getName() != null ? getName().equals(product.getName()) : product.getName() == null;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class Thing {
 
     @Override
     public String toString() {
-        return "Thing{" +
+        return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +

@@ -2,6 +2,8 @@
 
 The Focus Timer project is a joint work of Nic Bohm and Erik Küchler, created as part of our studies at HTW Berlin. Our goal is to develop an application that helps users manage their time and concentration.
 
+**[Link to Frontend Repository](https://github.com/nicbohm/FocusTimerFrotend)**
+
 ## Description
 
 The Focus Timer is a feature-rich time management application designed to help users optimize their productivity and maintain their focus. Here's a more detailed breakdown of its key functionalities:
