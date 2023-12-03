@@ -25,8 +25,18 @@ public class MeController {
     }
 
     @GetMapping("/")
-    public String index() {
-        return "Hello World";
+    public ResponseEntity<UserAccount> index() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
+        
+        Optional<UserAccount> optionalUserAccount = userRepository.findByEmail(userEmail);
+        
+        if (optionalUserAccount.isPresent()) {
+            UserAccount userAccount = optionalUserAccount.get();
+            return ResponseEntity.ok(userAccount);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/email")
