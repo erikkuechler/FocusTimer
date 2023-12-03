@@ -21,6 +21,8 @@ public class UserAccount {
     @JsonIgnore
     private String password;
 
+    private String userName;
+
     private int coins;
 
     public UserAccount() { }
@@ -55,6 +57,14 @@ public class UserAccount {
 
     public void setCoins(int coins) {
         this.coins = coins;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     
 }
