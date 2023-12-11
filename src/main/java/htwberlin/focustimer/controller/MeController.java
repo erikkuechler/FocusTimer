@@ -1,6 +1,8 @@
 package htwberlin.focustimer.controller;
 
 import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,30 +41,6 @@ public class MeController {
         }
     }
 
-    @GetMapping("/email")
-    public ResponseEntity<String> getUserEmail() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
-        
-        return ResponseEntity.ok(userEmail);
-    }
-
-    @GetMapping("/coins")
-    public ResponseEntity<Integer> getUserCoins() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
-        
-        Optional<UserAccount> optionalUserAccount = userRepository.findByEmail(userEmail);
-        
-        if (optionalUserAccount.isPresent()) {
-            UserAccount userAccount = optionalUserAccount.get();
-            int userCoins = userAccount.getCoins();
-            return ResponseEntity.ok(userCoins);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @PostMapping("/earn")
     public ResponseEntity<String> earnCoin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,14 +50,21 @@ public class MeController {
 
         if (optionalUserAccount.isPresent()) {
             UserAccount userAccount = optionalUserAccount.get();
-            int currentCoins = userAccount.getCoins();
-            userAccount.setCoins(currentCoins + 1); // Erhöhe die Coins um 1
-            userRepository.save(userAccount); // Speichere die aktualisierten Coins in der Datenbank
-            return ResponseEntity.ok("Coin earned successfully!");
+            LocalDateTime lastEarnTime = userAccount.getLastEarnTime(); // Zeitpunkt des letzten Coin-Erwerbs
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Überprüfe, ob weniger als eine Minute seit dem mal vergangen ist
+            if (lastEarnTime != null && ChronoUnit.MINUTES.between(lastEarnTime, currentTime) < 1) {
+                return ResponseEntity.badRequest().body("You can earn only one coin per minute.");
+            } else {
+                userAccount.setCoins(userAccount.getCoins() + 1); // Erhöhe die Coins um 1
+                userAccount.setLastEarnTime(currentTime); // Aktualisiere den Zeitpunkt des letzten Coin-Erwerbs
+                userRepository.save(userAccount); // Speichere die aktualisierten Daten in der Datenbank
+                return ResponseEntity.ok("Coin earned successfully!");
+            }
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
 
 }

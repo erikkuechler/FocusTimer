@@ -1,5 +1,6 @@
 package htwberlin.focustimer.entity;
 
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -24,6 +25,8 @@ public class UserAccount {
     private String userName;
 
     private int coins;
+
+    private LocalDateTime lastEarnTime;
 
     public UserAccount() { }
 
@@ -65,6 +68,14 @@ public class UserAccount {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public LocalDateTime getLastEarnTime() {
+        return lastEarnTime;
+    }
+
+    public void setLastEarnTime(LocalDateTime lastEarnTime) {
+        this.lastEarnTime = lastEarnTime;
     }
     
 }
