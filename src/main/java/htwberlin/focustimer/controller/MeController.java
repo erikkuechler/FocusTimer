@@ -67,4 +67,22 @@ public class MeController {
         }
     }
 
+    @PostMapping("/gettestcoins")
+    public ResponseEntity<String> gettestcoins() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        Optional<UserAccount> optionalUserAccount = userRepository.findByEmail(userEmail);
+
+        if (optionalUserAccount.isPresent()) {
+            UserAccount userAccount = optionalUserAccount.get();
+            int currentCoins = userAccount.getCoins();
+            userAccount.setCoins(currentCoins + 100); // Erhöhe die Coins um 100
+            userRepository.save(userAccount); // Speichere die aktualisierten Coins in der Datenbank
+            return ResponseEntity.ok("Coins earned successfully!");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

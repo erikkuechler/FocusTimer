@@ -9,12 +9,16 @@ public class Product {
     private Long id;
     private String name;
     private int price;
+    private String type;
+    private String imagePath;
 
     public Product() {}
 
-    public Product(String name, int price) {
+    public Product(String name, int price, String type, String imagePath) {
         this.name = name;
         this.price = price;
+        this.type = type;
+        this.imagePath = imagePath;
     }
 
     public Long getId() {
@@ -39,6 +43,22 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public String getimagePath() {
+        return imagePath;
+    }
+
+    public void setimagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
