@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class UserAccount {
@@ -42,11 +42,11 @@ public class UserAccount {
     )
     private List<Product> purchasedProducts;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "background_id")
     private Product activeBackground;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "foreground_id")
     private Product activeForeground;
 
