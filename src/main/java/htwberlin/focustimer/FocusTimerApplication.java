@@ -21,11 +21,11 @@ public class FocusTimerApplication {
 		// save a few products
 		if (repository.count() == 0) {
 			// Foreground
-			repository.save(new Product("Baum", 3, "Foreground", "Baum_Default"));
-			repository.save(new Product("Apfelbaum", 5, "Foreground", "Baum_Apple"));
+			repository.save(new Product("Baum", 0, "Foreground", "Baum_Default"));
+			repository.save(new Product("Apfelbaum", 3, "Foreground", "Baum_Apple"));
 			repository.save(new Product("Weihnachtsbaum", 10, "Foreground", "Baum_Christmas"));
 			// Background
-			repository.save(new Product("Blau", 3, "Background", "bg-blue"));
+			repository.save(new Product("Blau", 0, "Background", "bg-blue"));
 			repository.save(new Product("Gold", 8, "Background", "bg-gold"));
 			repository.save(new Product("Premium Grau", 15, "Background", "bg-gray"));
 		}

@@ -1,5 +1,7 @@
 package htwberlin.focustimer.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
+
+import htwberlin.focustimer.entity.Product;
 import htwberlin.focustimer.entity.UserAccount;
+import htwberlin.focustimer.repository.ProductRepository;
 import htwberlin.focustimer.repository.UserAccountRepository;
 import htwberlin.focustimer.request.AuthRequest;
 import htwberlin.focustimer.service.JwtTokenProvider;
@@ -27,6 +32,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider jwtTokenProvider;
+    private ProductRepository productRepository;
 
     /**
      * Constructs an AuthController with the necessary dependencies.
@@ -35,12 +41,14 @@ public class AuthController {
      * @param passwordEncoder The password encoder for securing user passwords.
      * @param authenticationManager The authentication manager for user login.
      * @param jwtTokenProvider The JWT token provider for token generation and validation.
+     * @param productRepository
      */
-    public AuthController(UserAccountRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public AuthController(UserAccountRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.productRepository = productRepository;
     }
 
     /**
@@ -61,6 +69,16 @@ public class AuthController {
         user.setUserName(authRequest.getUserName());
         user.setEmail(authRequest.getEmail());
         user.setPassword(passwordEncoder.encode(authRequest.getPassword()));
+
+        // Default Products
+        Product defaultForeground = productRepository.findById(1L).orElse(null);
+        Product defaultBackground = productRepository.findById(4L).orElse(null);
+        List<Product> purchasedProducts = new ArrayList<>();
+        purchasedProducts.add(defaultForeground);
+        purchasedProducts.add(defaultBackground);
+        user.setPurchasedProducts(purchasedProducts);
+        user.setActiveForeground(defaultForeground);
+        user.setActiveBackground(defaultBackground);
 
         UserAccount created = userRepository.save(user);
 
