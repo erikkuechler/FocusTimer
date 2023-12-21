@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
-
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import htwberlin.focustimer.entity.Product;
 import htwberlin.focustimer.entity.UserAccount;
 import htwberlin.focustimer.repository.ProductRepository;
 import htwberlin.focustimer.repository.UserAccountRepository;
 import htwberlin.focustimer.request.AuthRequest;
+import htwberlin.focustimer.request.UpdateRequest;
 import htwberlin.focustimer.service.JwtTokenProvider;
 
 /**
@@ -65,6 +67,14 @@ public class AuthController {
             return ResponseEntity.badRequest().build();
         }
 
+        if (authRequest.getPassword() == null || authRequest.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (authRequest.getUserName() == null || authRequest.getUserName().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
         UserAccount user = new UserAccount();
         user.setUserName(authRequest.getUserName());
         user.setEmail(authRequest.getEmail());
@@ -102,5 +112,56 @@ public class AuthController {
 
         return ResponseEntity.ok(jwtTokenProvider.generateToken(authentication));
     }
-    
+
+    /**
+     * Updates user account information based on the provided request.
+     *
+     * Handles password, email, and username updates. Deletes the account if requested.
+     *
+     * @param updateRequest The request object containing updated user information.
+     * @return ResponseEntity shows whether the update operation was successful or not.
+     */
+    @PostMapping(value = "/update")
+    public ResponseEntity<String> updateAccount(@RequestBody UpdateRequest updateRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        Optional<UserAccount> optionalUserAccount = userRepository.findByEmail(userEmail);
+
+        if (!optionalUserAccount.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        UserAccount user = optionalUserAccount.get();
+
+        // Passwort
+        if (!passwordEncoder.matches(updateRequest.getPassword(), user.getPassword())) {
+            return ResponseEntity.badRequest().body("Wrong password.");
+        }
+
+        // new Passwort
+        if (updateRequest.getNewPassword() != null && !updateRequest.getNewPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(updateRequest.getNewPassword()));
+        }
+
+        // E-Mail
+        if (updateRequest.getEmail() != null && !updateRequest.getEmail().isEmpty()) {
+            user.setEmail(updateRequest.getEmail());
+        }
+
+        // Username
+        if (updateRequest.getUsername() != null && !updateRequest.getUsername().isEmpty()) {
+            user.setUserName(updateRequest.getUsername());
+        }
+
+        // delete = true
+        if (updateRequest.isDelete()) {
+            userRepository.delete(user);
+            return ResponseEntity.ok("User account has been deleted!");
+        }
+
+        userRepository.save(user);
+        return ResponseEntity.ok("User account has been updated!");
+    }
+
 }
