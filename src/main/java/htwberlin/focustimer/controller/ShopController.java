@@ -134,22 +134,4 @@ public class ShopController {
         }
     }
 
-    @PostMapping("/products")
-    public Product createProduct(@RequestBody Product product) {
-        return service.save(product);
-    }
-
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable String id) {
-        Long productId = Long.parseLong(id);
-        
-        // Überprüfen, ob das Produkt existiert, bevor du versuchst, es zu löschen
-        if (service.get(productId) != null) {
-            service.delete(productId);
-            return ResponseEntity.ok("Product deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }

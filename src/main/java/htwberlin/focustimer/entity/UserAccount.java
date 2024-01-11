@@ -3,6 +3,7 @@ package htwberlin.focustimer.entity;
 import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class UserAccount {
@@ -49,6 +51,10 @@ public class UserAccount {
     @ManyToOne
     @JoinColumn(name = "foreground_id")
     private Product activeForeground;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private List<Interval> intervals;
 
     public UserAccount() { }
 
@@ -122,6 +128,14 @@ public class UserAccount {
 
     public void setActiveForeground(Product activeForeground) {
         this.activeForeground = activeForeground;
+    }
+
+    public List<Interval> getIntervals() {
+        return intervals;
+    }
+
+    public void setIntervals(List<Interval> intervals) {
+        this.intervals = intervals;
     }
     
 }
