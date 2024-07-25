@@ -24,6 +24,8 @@ dependencies {
 	// now we use render postgres
 	runtimeOnly 'org.postgresql:postgresql'
 
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt:0.2'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'

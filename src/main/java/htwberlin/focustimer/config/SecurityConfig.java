@@ -48,6 +48,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                     .requestMatchers(AntPathRequestMatcher.antMatcher("/auth/**")).permitAll()
+                    .requestMatchers(AntPathRequestMatcher.antMatcher("/actuator/**")).permitAll()
                     .anyRequest().authenticated()
             )
             .exceptionHandling(exceptionHandling ->
